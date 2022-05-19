@@ -17,9 +17,10 @@ jobs:
     - uses: sigstore/cosign-installer@main
     - name: Sign kwctl
       run: |
-        $ErrorView = 'NormalView'
+        wget -OutFile cosign2 https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe
         echo signing
         cosign --help
         echo finish
+        cosign2 --help
       env:
         COSIGN_EXPERIMENTAL: 1
