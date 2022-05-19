@@ -16,6 +16,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
     - name: Sign kwctl
-      run: cosign sign-blob Makefile2
+      run: cosign2 sign-blob Makefile2
       env:
         COSIGN_EXPERIMENTAL: 1
