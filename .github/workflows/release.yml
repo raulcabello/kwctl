@@ -18,6 +18,7 @@ jobs:
       - ci
     steps:
     - uses: actions/checkout@v2
+    - uses: sigstore/cosign-installer@main
     - name: Setup rust toolchain
       uses: actions-rs/toolchain@v1
       with:
@@ -32,95 +33,22 @@ jobs:
         CC: x86_64-linux-musl-gcc
       run: cargo build --target=x86_64-unknown-linux-musl --release
     - run: mv target/x86_64-unknown-linux-musl/release/kwctl kwctl-linux-x86_64
-    - run: zip -j9 kwctl-linux-x86_64.zip kwctl-linux-x86_64
+    - name: Sign kwctl
+      run: cosign sign-blob kwctl-linux-x86_64 > kwctl-linux-x86_64.sig
+      env:
+        COSIGN_EXPERIMENTAL: 1
+    - run: zip -j9 kwctl-linux-x86_64.zip kwctl-linux-x86_64 kwctl-linux-x86_64.sig
     - name: Upload binary
       uses: actions/upload-artifact@v2
       with:
         name: kwctl-linux-x86_64
         path: kwctl-linux-x86_64.zip
 
-  build-linux-aarch64:
-    name: Build linux (aarch64) binary
-    runs-on: ubuntu-latest
-    needs:
-      - ci
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup rust toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-    - name: Setup musl for aarch64
-      run: |
-        curl https://musl.cc/aarch64-linux-musl-cross.tgz | tar -xz
-        echo "$PWD/aarch64-linux-musl-cross/bin" >> $GITHUB_PATH
-    - run: rustup target add aarch64-unknown-linux-musl
-    - name: Build kwctl
-      env:
-        CC: aarch64-linux-musl-gcc
-      run: cargo build --target=aarch64-unknown-linux-musl --release
-    - run: mv target/aarch64-unknown-linux-musl/release/kwctl kwctl-linux-aarch64
-    - run: zip -j9 kwctl-linux-aarch64.zip kwctl-linux-aarch64
-    - name: Upload binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: kwctl-linux-aarch64
-        path: kwctl-linux-aarch64.zip
-
-  build-darwin-x86_64:
-    name: Build darwin (x86_64) binary
-    runs-on: macos-latest
-    needs:
-      - ci
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup rust toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-    - run: rustup target add x86_64-apple-darwin
-    - name: Build kwctl
-      run: cargo build --target=x86_64-apple-darwin --release
-    - run: mv target/x86_64-apple-darwin/release/kwctl kwctl-darwin-x86_64
-    - run: zip -j9 kwctl-darwin-x86_64.zip kwctl-darwin-x86_64
-    - name: Upload binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: kwctl-darwin-x86_64
-        path: kwctl-darwin-x86_64.zip
-
-  build-windows-x86_64:
-    name: Build windows (x86_64) binary
-    runs-on: windows-latest
-    needs:
-      - ci
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup rust toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-    - run: rustup target add x86_64-pc-windows-msvc
-    - name: Build kwctl
-      run: cargo build --target=x86_64-pc-windows-msvc --release
-    - run: mv target/x86_64-pc-windows-msvc/release/kwctl.exe kwctl-windows-x86_64.exe
-    - run: |
-        "/c/Program Files/7-Zip/7z.exe" a kwctl-windows-x86_64.exe.zip kwctl-windows-x86_64.exe
-      shell: bash
-    - name: Upload binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: kwctl-windows-x86_64
-        path: kwctl-windows-x86_64.exe.zip
-
   release:
     name: Create release
     runs-on: ubuntu-latest
     needs:
       - build-linux-x86_64
-      - build-linux-aarch64
-      - build-darwin-x86_64
-      - build-windows-x86_64
     steps:
     - name: Create Release
       id: create-release
@@ -145,46 +73,4 @@ jobs:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_name: kwctl-linux-x86_64.zip
         asset_path: kwctl-linux-x86_64.zip
-        asset_content_type: application/zip
-
-    - name: Download linux-aarch64 binary
-      uses: actions/download-artifact@v2
-      with:
-        name: kwctl-linux-aarch64
-    - name: Publish linux-aarch64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_name: kwctl-linux-aarch64.zip
-        asset_path: kwctl-linux-aarch64.zip
-        asset_content_type: application/zip
-
-    - name: Download darwin-x86_64 binary
-      uses: actions/download-artifact@v2
-      with:
-        name: kwctl-darwin-x86_64
-    - name: Publish darwin-x86_64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_name: kwctl-darwin-x86_64.zip
-        asset_path: kwctl-darwin-x86_64.zip
-        asset_content_type: application/zip
-
-    - name: Download windows-x86_64 binary
-      uses: actions/download-artifact@v2
-      with:
-        name: kwctl-windows-x86_64
-    - name: Publish windows-x86_64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_name: kwctl-windows-x86_64.exe.zip
-        asset_path: kwctl-windows-x86_64.exe.zip
         asset_content_type: application/zip
