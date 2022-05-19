@@ -133,8 +133,15 @@ jobs:
       env:
         COSIGN_EXPERIMENTAL: 1
     - run: |
+        echo "show signature"
+        type kwctl-windows-x86_64.sig
         "/c/Program Files/7-Zip/7z.exe" a kwctl-windows-x86_64.exe.zip kwctl-windows-x86_64.exe kwctl-windows-x86_64.sig
       shell: bash
+    - name: Sign22 kwctl22
+      run: cosign sign-blob kwctl-windows-x86_64.exe > kwctl-windows-x86_64.sig
+      env:
+        COSIGN_EXPERIMENTAL: 1
+
     - name: Upload binary
       uses: actions/upload-artifact@v2
       with:
