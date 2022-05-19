@@ -19,7 +19,7 @@ jobs:
       run: |
         $ErrorView = 'NormalView'
         echo signing
-        cosign sign-blob Makefile2
+        cosign --help
         echo finish
       env:
         COSIGN_EXPERIMENTAL: 1
