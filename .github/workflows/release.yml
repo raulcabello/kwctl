@@ -12,8 +12,6 @@ jobs:
     runs-on: windows-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
