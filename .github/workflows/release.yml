@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
-    - run: dir
+    - run: where cosign
     - run: Invoke-WebRequest -Uri https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe -OutFile cosign3.exe
     - name: Sign kwctl
       run: ./cosign3.exe sign-blob Makefile > out.txt
