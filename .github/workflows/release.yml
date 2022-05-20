@@ -11,9 +11,12 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - run: Invoke-WebRequest -Uri https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe -OutFile cosign2.exe
+    - uses: actions/checkout@v2
+    - uses: sigstore/cosign-installer@main
     - run: dir
+    - run: Invoke-WebRequest -Uri https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe -OutFile cosign3.exe
     - name: Sign kwctl
-      run: ./cosign2.exe sign-blob Makefile2
+      run: ./cosign3.exe sign-blob Makefile > out.txt
       env:
         COSIGN_EXPERIMENTAL: 1
+    - run: type out.txt
