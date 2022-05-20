@@ -3,8 +3,6 @@ on:
   push:
     tags:
     - 'v*'
-env:
-  CARGO_TERM_COLOR: always
 jobs:
 
   build-windows-x86_64:
@@ -13,10 +11,9 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - uses: actions/checkout@v2
-    - uses: sigstore/cosign-installer@main
-    - run: Invoke-WebRequest -Uri https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe -OutFile cosign2
+    - run: Invoke-WebRequest -Uri https://github.com/sigstore/cosign/releases/download/v1.8.0/cosign-windows-amd64.exe -OutFile cosign2.exe
+    - run: dir
     - name: Sign kwctl
-      run: ./cosign2 sign-blob Makefile2
+      run: ./cosign2.exe sign-blob Makefile2
       env:
         COSIGN_EXPERIMENTAL: 1
