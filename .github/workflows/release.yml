@@ -6,14 +6,11 @@ on:
 env:
   CARGO_TERM_COLOR: always
 jobs:
-
   build-windows-x86_64:
     name: Build windows (x86_64) binary
     runs-on: windows-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - run: echo $HOME
     - run: dir $HOME
