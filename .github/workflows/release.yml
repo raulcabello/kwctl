@@ -16,6 +16,7 @@ jobs:
     - run: dir $HOME
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
-    - run: dir $HOME
+    - run: dir $HOME/.cosign
     - run: cosign --help
+    - run: mv $HOME/.cosign/cosign $HOME/.cosign/cosign.exe
     - run: cosign.exe --help
