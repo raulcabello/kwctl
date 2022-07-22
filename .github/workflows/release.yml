@@ -7,9 +7,9 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
 
-  ci:
+  #ci:
     # A branch is required, and cannot be dynamic - https://github.com/actions/runner/issues/1493
-    uses: kubewarden/kwctl/.github/workflows/tests.yml@main
+   # uses: kubewarden/kwctl/.github/workflows/tests.yml@main
 
   build-linux-x86_64:
     name: Build linux (x86_64) binary
