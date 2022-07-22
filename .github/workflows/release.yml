@@ -16,8 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
@@ -86,8 +84,6 @@ jobs:
     runs-on: macos-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
