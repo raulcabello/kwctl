@@ -404,7 +404,7 @@ checksum = "37ccbd214614c6783386c1af30caf03192f17891059cecc394b4fb119e363de3"
 [[package]]
 name = "burrego"
 version = "0.1.3"
-source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.4.5#80f96c08841cab79961aa5683776ebcbfd5bfa7b"
+source = "git+https://github.com/raulcabello/policy-evaluator?branch=credstore#3fa735edd433995a8ba18fa91995ee8fadf97dfc"
 dependencies = [
  "anyhow",
  "base64",
@@ -476,13 +476,13 @@ dependencies = [
 
 [[package]]
 name = "cached"
-version = "0.36.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76d9447b2a367383a918fbbe62f6892da68000170c7331003d132b4805b63214"
+checksum = "1fb357e6e99f5d293f67f492dd3eb7f8c4d5ed7c48d22129f3464e57c9dd5394"
 dependencies = [
  "async-trait",
  "async_once",
- "cached_proc_macro 0.13.0",
+ "cached_proc_macro 0.14.0",
  "cached_proc_macro_types",
  "futures",
  "hashbrown 0.12.3",
@@ -507,9 +507,9 @@ dependencies = [
 
 [[package]]
 name = "cached_proc_macro"
-version = "0.13.0"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4797df465f7409b55bab9ccd1edbf1d279ffdf763772c2804b96740ee72f3b82"
+checksum = "b01c8c46a3494c931456ad652aaab219cccd2785bdf3efbc00f733849d00df03"
 dependencies = [
  "cached_proc_macro_types",
  "darling",
@@ -3020,12 +3020,12 @@ dependencies = [
 [[package]]
 name = "policy-evaluator"
 version = "0.4.5"
-source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.4.5#80f96c08841cab79961aa5683776ebcbfd5bfa7b"
+source = "git+https://github.com/raulcabello/policy-evaluator?branch=credstore#3fa735edd433995a8ba18fa91995ee8fadf97dfc"
 dependencies = [
  "anyhow",
  "base64",
  "burrego",
- "cached 0.36.0",
+ "cached 0.37.0",
  "dns-lookup",
  "json-patch",
  "k8s-openapi",
@@ -3048,7 +3048,7 @@ dependencies = [
 [[package]]
 name = "policy-fetcher"
 version = "0.7.9"
-source = "git+https://github.com/kubewarden/policy-fetcher?tag=v0.7.9#e3145ce66a2ca952128983f6e3fcc77c41d3a259"
+source = "git+https://github.com/raulcabello/policy-fetcher?branch=credstore#3f25ec589e8d9fa138c660cf59eb71c7071bdfe8"
 dependencies = [
  "anyhow",
  "async-std",
