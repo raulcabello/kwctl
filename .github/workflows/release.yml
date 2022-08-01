@@ -137,8 +137,6 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     needs:
-      - build-linux-x86_64
-      - build-linux-aarch64
       - build-darwin-x86_64
       - build-windows-x86_64
     steps:
@@ -152,34 +150,6 @@ jobs:
         release_name: Release kwctl ${{ github.ref }}
         draft: false
         prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
-
-    - name: Download linux-x86_64 binary
-      uses: actions/download-artifact@v2
-      with:
-        name: kwctl-linux-x86_64
-    - name: Publish linux-x86_64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_name: kwctl-linux-x86_64.zip
-        asset_path: kwctl-linux-x86_64.zip
-        asset_content_type: application/zip
-
-    - name: Download linux-aarch64 binary
-      uses: actions/download-artifact@v2
-      with:
-        name: kwctl-linux-aarch64
-    - name: Publish linux-aarch64 binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_name: kwctl-linux-aarch64.zip
-        asset_path: kwctl-linux-aarch64.zip
-        asset_content_type: application/zip
 
     - name: Download darwin-x86_64 binary
       uses: actions/download-artifact@v2
