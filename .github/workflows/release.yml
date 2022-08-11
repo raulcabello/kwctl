@@ -7,17 +7,11 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
 
-  ci:
-    # A branch is required, and cannot be dynamic - https://github.com/actions/runner/issues/1493
-    uses: kubewarden/kwctl/.github/workflows/tests.yml@main
-
   build-linux-x86_64:
     name: Build linux (x86_64) binary
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
@@ -25,10 +19,6 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
-    - name: Setup musl for x86_64
-      run: |
-        curl -vvv https://musl.cc/x86_64-linux-musl-cross.tgz | tar -xz
-        echo "$PWD/x86_64-linux-musl-cross/bin" >> $GITHUB_PATH
     - run: rustup target add x86_64-unknown-linux-musl
     - name: Build kwctl
       env:
@@ -51,8 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
@@ -60,10 +48,6 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
-    - name: Setup musl for aarch64
-      run: |
-        curl https://musl.cc/aarch64-linux-musl-cross.tgz | tar -xz
-        echo "$PWD/aarch64-linux-musl-cross/bin" >> $GITHUB_PATH
     - run: rustup target add aarch64-unknown-linux-musl
     - name: Build kwctl
       env:
@@ -86,8 +70,6 @@ jobs:
     runs-on: macos-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
@@ -117,8 +99,6 @@ jobs:
     runs-on: macos-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
@@ -146,8 +126,6 @@ jobs:
     runs-on: windows-latest
     permissions:
       id-token: write
-    needs:
-      - ci
     steps:
     - uses: actions/checkout@v2
     - uses: sigstore/cosign-installer@main
