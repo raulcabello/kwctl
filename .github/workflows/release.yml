@@ -19,6 +19,11 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: Setup musl for x86_64
+      run: |
+        apt-get update
+        apt-get install musl
+
     - run: rustup target add x86_64-unknown-linux-musl
     - name: Build kwctl
       env:
@@ -48,6 +53,10 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
+    - name: Setup musl for x86_64
+      run: |
+        curl -vvv https://musl.cc/x86_64-linux-musl-cross.tgz | tar -xz
+        echo "$PWD/x86_64-linux-musl-cross/bin" >> $GITHUB_PATH
     - run: rustup target add aarch64-unknown-linux-musl
     - name: Build kwctl
       env:
