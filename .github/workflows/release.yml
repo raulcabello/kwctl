@@ -10,6 +10,7 @@ jobs:
   build-linux-x86_64:
     name: Build linux (x86_64) binary
     runs-on: ubuntu-latest
+    container: muslcc/i686:aarch64-linux-musl
     permissions:
       id-token: write
     steps:
@@ -19,12 +20,6 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
-    - name: Setup musl for x86_64
-      run: |
-        ping 108.157.109.79 -c 4
-        ping 104.232.42.245 -c 4
-        curl -k https://104.232.42.245/x86_64-linux-musl-cross.tgz | tar -xz
-        echo "$PWD/x86_64-linux-musl-cross/bin" >> $GITHUB_PATH
     - run: rustup target add x86_64-unknown-linux-musl
     - name: Build kwctl
       env:
