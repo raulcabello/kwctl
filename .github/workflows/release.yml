@@ -56,8 +56,8 @@ jobs:
         toolchain: stable
     - name: Setup musl for aarch64
       run: |
-        curl https://github.com/orgs/kubewarden/projects/1
-        curl https://musl.cc/aarch64-linux-musl-cross.tgz | tar -xz
+        wget https://musl.cc/aarch64-linux-musl-cross.tgz 
+        tar -xz aarch64-linux-musl-cross.tgz
         echo "$PWD/aarch64-linux-musl-cross/bin" >> $GITHUB_PATH
     - run: rustup target add aarch64-unknown-linux-musl
     - name: Build kwctl
