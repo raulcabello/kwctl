@@ -22,7 +22,7 @@ jobs:
     - name: Setup musl for x86_64
       run: |
         sudo apt-get update
-        sudo apt-get install musl=1.1.24-1
+        sudo apt-get install musl-tools
 
     - run: rustup target add x86_64-unknown-linux-musl
     - name: Build kwctl
