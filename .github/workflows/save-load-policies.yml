@@ -1,6 +1,7 @@
-name: Continuous integration
+name: Airgap e2e test
 on:
   - push
+  - pull_request
 
 # Declare default permissions as read only.
 permissions: read-all
@@ -15,8 +16,8 @@ jobs:
         run: |
           export CONTAINER_ID=$(docker run -d -p 5000:5000 --name registry registry:2) 
           echo "CONTAINER_ID=${CONTAINER_ID}" >> $GITHUB_ENV
-      - run: cargo install --path .
-      - run: kwctl -h
+      - name: Install kwctl
+        run: cargo install --path .
       - name: Save policies
         run: ./kubewarden-save-policies.sh --policies-list e2e-tests/airgap/policies.txt --policies policies.tar.gz
       - name: Remove policies from store
@@ -33,7 +34,3 @@ jobs:
         if: always()
         run: |
           docker rm -f ${{ env.CONTAINER_ID }}
-
-
-
-
