@@ -123,6 +123,15 @@ jobs:
             kwctl-linux-${{ matrix.targetarch }}-sbom.spdx.cert
             kwctl-linux-${{ matrix.targetarch }}-sbom.spdx.sig
 
+      - name: Upload kwctl air gap scripts
+        if: ${{ matrix.targetarch == 'x86_64' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: kwctl-airgap-scripts
+          path: |
+            scripts/kubewarden-load-policies.sh
+            scripts/kubewarden-save-policies.sh
+
   build-darwin-binaries:
     name: Build darwin binary
     strategy:
@@ -268,3 +277,4 @@ jobs:
         prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
         files: |
           ${{steps.download.outputs.download-path}}/kwctl*/**
+          ${{steps.download.outputs.download-path}}/kwctl-airgap-scripts*/**
