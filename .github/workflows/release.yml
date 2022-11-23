@@ -264,6 +264,8 @@ jobs:
     - name: Download all artifact
       id: download
       uses: actions/download-artifact@v2
+    - name: list
+      run: ls -l
 
     - name: Create Release
       id: create-release
